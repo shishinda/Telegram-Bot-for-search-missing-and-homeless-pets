@@ -1,8 +1,11 @@
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
+from aiogram.dispatcher.filters import Text
 from aiogram import types, Dispatcher
 from create_bot import dp, bot
 from data_base import sqlite_db
+from keyboards import admin_kb
+
 
 ID = None
 
@@ -19,7 +22,7 @@ class FSMAdmin(StatesGroup):
 async def make_changes_command(message: types.Message):
     global ID
     ID = message.from_user.id
-    await bot.send_message(message.from_user.id, 'Ожидаю команды администратора'), #reply_markup=button_case_admin)
+    await bot.send_message(message.from_user.id, 'Ожидаю команды администратора', reply_markup=admin_kb.button_case_admin)
     await message.delete()
 
 #Начало диалога загрузки новой заявки

@@ -2,6 +2,7 @@ from aiogram import types, Dispatcher
 from create_bot import dp, bot
 from keyboards import kb_client
 from aiogram.types import ReplyKeyboardRemove
+from data_base import sqlite_db
 
 #@dp.message_handler(commands=['start'])
 async def command_start(message : types.Message):
@@ -23,10 +24,11 @@ async def command_help(message: types.Message):
     except:
         await message.reply( 'Взаимодействие с Ботом осуществляется через ЛС, напишите ему: https://t.me/PetsSearchBot')
 
-#@dp.message_handler(commans=['Активные_заявки'])
-#async def active_applications_command(message: types.Message):
-#    for
+@dp.message_handler(commands=['Активные_заявки'])
+async def search_applications(message : types.Message):
+    await sqlite_db.sql_read(message)
 
 def register_handlers_client(dp : Dispatcher):
     dp.register_message_handler(command_start, commands=['start'])
     dp.register_message_handler(command_help, commands=['help'])
+    dp.register_message_handler(search_applications, commands=['Активные_заявки'])

@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1efad723-3b2e-4582-ac9d-28303ad5eefd" name="Changes" comment="Add DB">
+    <list default="true" id="1efad723-3b2e-4582-ac9d-28303ad5eefd" name="Changes" comment="Add &quot;Hello World&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_base/sqlite_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_base/sqlite_db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handlers/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handlers/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/client.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/keyboards/admin_kb.py" beforeDir="false" afterPath="$PROJECT_DIR$/keyboards/admin_kb.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -45,11 +48,19 @@
       <option name="project" value="LOCAL" />
       <updated>1683392574240</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Add &quot;Hello World&quot;">
+      <created>1683392704095</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1683392704096</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add DB" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add DB" />
+    <MESSAGE value="Add &quot;Hello World&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add &quot;Hello World&quot;" />
   </component>
 </project>
