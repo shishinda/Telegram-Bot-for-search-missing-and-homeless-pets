@@ -18,3 +18,10 @@ async def sql_add_command(state):
 async def sql_read(message):
     for ret in cur.execute('SELECT * FROM applications').fetchall():
         await bot.send_photo(message.from_user.id, ret[3], f'Кличка животного:{ret[0]}\nПорода:{ret[1]}\nПриметы:{ret[2]}\nИмя хозяина:{ret[4]}\nТелефон хозяина:{ret[5]}')
+
+async def sql_read2():
+    return cur.execute('SELECT * FROM applications').fetchall()
+
+async def sql_delete_command(data):
+    cur.execute('DELETE FROM applications WHERE pets_name == ?', (data,))
+    base.commit()

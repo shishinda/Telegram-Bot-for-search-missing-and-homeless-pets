@@ -5,6 +5,7 @@ from aiogram import types, Dispatcher
 from create_bot import dp, bot
 from data_base import sqlite_db
 from keyboards import admin_kb
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
 ID = None
@@ -98,6 +99,20 @@ async def load_owner_phone(message: types.Message, state: FSMContext):
         await sqlite_db.sql_add_command(state)
         await state.finish()
 
+@dp.callback_query_handler(lambda x: x.data and x.data.startswith('del'))
+async def del_callback_run(callback_querry: types.CallbackQuery):
+    await sqlite_db.sql_delete_command(callback_querry.data.replace('del ', ''))
+    await callback_querry.answer(text=f'Заявка на поиск {callback_querry.data.replace("del ", "")} удалена', show_alert=True)
+
+#@dp.message_handler(commands='Удалить')
+async def delete_item(message: types.Message):
+    if message.from_user.id == ID:
+        read = await sqlite_db.sql_read2()
+        for ret in read:
+            await bot.send_photo(message.from_user.id, ret[3], f'Кличка животного:{ret[0]}\nПорода:{ret[1]}\nПриметы:{ret[2]}\nИмя хозяина:{ret[4]}\nТелефон хозяина:{ret[5]}')
+            await bot.send_message(message.from_user.id, text='^^^', reply_markup=InlineKeyboardMarkup().\
+                                   add(InlineKeyboardButton(f'Удалить заявку на поиск {ret[0]}', callback_data=f'del {ret[0]}')))
+
 #Регистрируем хэндлеры
 def register_handlers_admin(dp : Dispatcher):
     dp.register_message_handler(cm_start, commands=['Новая_заявка'], state=None)
@@ -110,6 +125,7 @@ def register_handlers_admin(dp : Dispatcher):
     dp.register_message_handler(load_owner_name, state=FSMAdmin.owner_name)
     dp.register_message_handler(load_owner_phone, state=FSMAdmin.owner_phone)
     dp.register_message_handler(make_changes_command, commands=['moderator'], is_chat_admin=True)
+    dp.register_message_handler(delete_item, commands=['Удалить'])
 
 
 
