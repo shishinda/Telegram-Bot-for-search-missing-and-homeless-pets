@@ -24,11 +24,16 @@ async def command_help(message: types.Message):
     except:
         await message.reply( 'Взаимодействие с Ботом осуществляется через ЛС, напишите ему: https://t.me/PetsSearchBot')
 
-@dp.message_handler(commands=['Активные_заявки'])
+#@dp.message_handler(commands=['Активные_заявки'])
 async def search_applications(message : types.Message):
     await sqlite_db.sql_read(message)
+
+#@dp.message_handler(commands=['Заявки_из_приютов'])
+async def applications_from_nursery(message : types.Message):
+    await sqlite_db.sql_read3(message)
 
 def register_handlers_client(dp : Dispatcher):
     dp.register_message_handler(command_start, commands=['start'])
     dp.register_message_handler(command_help, commands=['help'])
     dp.register_message_handler(search_applications, commands=['Активные_заявки'])
+    dp.register_message_handler(applications_from_nursery, commands=['Заявки_из_приютов'])
