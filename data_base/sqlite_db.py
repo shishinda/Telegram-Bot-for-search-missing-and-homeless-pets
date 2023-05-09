@@ -17,8 +17,8 @@ async def sql_add_command(state):
         base.commit()
 
 async def sql_add_command2(state):
-    async with state.proxy() as data2:
-        cur.execute('INSERT INTO homeless VALUES (?, ?, ?, ?, ?)', tuple(data2.values()))
+    async with state.proxy() as data:
+        cur.execute('INSERT INTO homeless VALUES (?, ?, ?, ?, ?)', tuple(data.values()))
         base.commit()
 
 async def sql_read(message):
@@ -39,6 +39,6 @@ async def sql_delete_command(data):
     cur.execute('DELETE FROM applications WHERE pets_name == ?', (data,))
     base.commit()
 
-async def sql_delete_command2(data2):
-    cur.execute('DELETE FROM homeless WHERE nursery_animal_name == ?', (data2,))
+async def sql_delete_nursery_data(data):
+    cur.execute('DELETE FROM homeless WHERE nursery_animal_name == ?', (data,))
     base.commit()

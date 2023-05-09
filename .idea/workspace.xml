@@ -4,18 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1efad723-3b2e-4582-ac9d-28303ad5eefd" name="Changes" comment="Added the ability to delete data from the DB if you have administrator rights">
+    <list default="true" id="1efad723-3b2e-4582-ac9d-28303ad5eefd" name="Changes" comment="Added second DB">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_base/sqlite_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_base/sqlite_db.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/handlers/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keyboards/admin_kb.py" beforeDir="false" afterPath="$PROJECT_DIR$/keyboards/admin_kb.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/keyboards/client_kb.py" beforeDir="false" afterPath="$PROJECT_DIR$/keyboards/client_kb.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -77,8 +81,26 @@
       <option name="project" value="LOCAL" />
       <updated>1683460701034</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Added second DB">
+      <created>1683621968872</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1683621968872</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add DB" />
@@ -86,6 +108,7 @@
     <MESSAGE value="Added the ability to enter data into DB" />
     <MESSAGE value="Added the ability to read data from DB" />
     <MESSAGE value="Added the ability to delete data from the DB if you have administrator rights" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added the ability to delete data from the DB if you have administrator rights" />
+    <MESSAGE value="Added second DB" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added second DB" />
   </component>
 </project>
