@@ -106,10 +106,13 @@ async def load_owner_phone(message: types.Message, state: FSMContext):
         await sqlite_db.sql_add_command(state)
         await state.finish()
 
-@dp.callback_query_handler(lambda x: x.data and x.data.startswith('del'))
-async def del_callback_run(callback_querry: types.CallbackQuery):
-    await sqlite_db.sql_delete_command(callback_querry.data.replace('del ', ''))
-    await callback_querry.answer(text=f'Заявка на поиск {callback_querry.data.replace("del ", "")} удалена', show_alert=True)
+
+
+@dp.callback_query_handler(lambda x: x.data and x.data.startswith('DELETE FROM applications'))
+async def del_callback_run(callback: types.CallbackQuery):
+    await sqlite_db.sql_delete_command(callback.data.replace('DELETE FROM applications ', ''))
+    await callback.answer(text=f'Заявка на поиск {callback.data.replace("DELETE FROM applications ", "")} удалена', show_alert=True)
+
 
 #@dp.message_handler(commands='Удалить')
 async def delete_item(message: types.Message):
@@ -118,7 +121,7 @@ async def delete_item(message: types.Message):
         for ret in read:
             await bot.send_photo(message.from_user.id, ret[3], f'Кличка животного:{ret[0]}\nПорода:{ret[1]}\nПриметы:{ret[2]}\nИмя хозяина:{ret[4]}\nТелефон хозяина:{ret[5]}')
             await bot.send_message(message.from_user.id, text='^^^', reply_markup=InlineKeyboardMarkup().\
-                                   add(InlineKeyboardButton(f'Удалить заявку на поиск {ret[0]}', callback_data=f'del {ret[0]}')))
+                                   add(InlineKeyboardButton(f'Удалить заявку на поиск {ret[0]}', callback_data=f'DELETE FROM applications {ret[0]}')))
 
 #Начало диалога загрузки новой заявки из питомника
 #@dp.message_handler(commands='Заявка_из_питомника', state=None)
@@ -172,10 +175,10 @@ async def load_nursery_animal_name(message: types.Message, state: FSMContext):
         await sqlite_db.sql_add_command2(state)
         await state.finish()
 
-@dp.callback_query_handler(lambda c: c.nursery_data and c.nursery_data.startswith('DELETE FROM homeless'))
+@dp.callback_query_handler(lambda c: c.data and c.data.startswith('DELETE FROM homeless'))
 async def delete_nursery_data(call: types.CallbackQuery):
-    await sqlite_db.sql_delete_nursery_data(call.nursery_data.replace('DELETE FROM homeless ', ''))
-    await call.answer(text=f'Заявка на поиск дома для {call.nursery_data.replace("del ", "")} удалена', show_alert=True)
+    await sqlite_db.sql_delete_nursery_data(call.data.replace('DELETE FROM homeless ', ''))
+    await call.answer(text=f'Заявка на поиск дома для {call.data.replace("DELETE FROM homeless ", "")} удалена', show_alert=True)
 
 #@dp.message_handler(commands='Удаление_заявки_питомник')
 async def delete_item2(message: types.Message):
@@ -184,12 +187,32 @@ async def delete_item2(message: types.Message):
         for ret in read:
             await bot.send_photo(message.from_user.id, ret[3], f'Название приюта:{ret[0]}\nАдрес приюта:{ret[1]}\nПорода животного:{ret[2]}\nКличка животного:{ret[4]}')
             await bot.send_message(message.from_user.id, text='^^^', reply_markup=InlineKeyboardMarkup().\
-                                   add(InlineKeyboardButton(f'Удалить заявку на поиск дома для {ret[4]}', callback_data=f'del {ret[4]}')))
+                                   add(InlineKeyboardButton(f'Удалить заявку на поиск дома для {ret[4]}', callback_data=f'DELETE FROM homeless {ret[4]}')))
+
+#@dp.message_handler(commands=['Поданные_заявки'])
+async def client_applications_read(message : types.Message):
+    if message.from_user.id == ID:
+        await sqlite_db.sql_read_client(message)
+
+@dp.callback_query_handler(lambda y: y.data and y.data.startswith('DELETE FROM applications_from_users'))
+async def delete_client_data(callback: types.CallbackQuery):
+    await sqlite_db.sql_delete_client_data(callback.data.replace('DELETE FROM applications_from_users ', ''))
+    await callback.answer(text=f'Поданная заявка на поиск {callback.data.replace("DELETE FROM applications_from_users ", "")} удалена', show_alert=True)
+
+
+#@dp.message_handler(commands='Удалить_поданные_заявки')
+async def delete_client_application(message: types.Message):
+    if message.from_user.id == ID:
+        read = await sqlite_db.sql_read_client_for_delete()
+        for ret in read:
+            await bot.send_photo(message.from_user.id, ret[3], f'Кличка животного:{ret[0]}\nПорода:{ret[1]}\nПриметы:{ret[2]}\nИмя заявителя:{ret[4]}\nТелефон заявителя:{ret[5]}')
+            await bot.send_message(message.from_user.id, text='^^^', reply_markup=InlineKeyboardMarkup(). \
+                                   add(InlineKeyboardButton(f'Удалить поданную заявку на поиск {ret[0]}', callback_data=f'DELETE FROM applications_from_users {ret[0]}')))
 
 #Регистрируем хэндлеры
 def register_handlers_admin(dp : Dispatcher):
-    dp.register_message_handler(make_changes_command, commands=['moderator'], is_chat_admin=True)
-    dp.register_message_handler(cm_start, commands=['Новая_заявка'], state=None)
+    dp.register_message_handler(make_changes_command, commands='moderator', is_chat_admin=True)
+    dp.register_message_handler(cm_start, commands='Новая_заявка', state=None)
     dp.register_message_handler(cansel_handler, state="*", commands='отмена')
     dp.register_message_handler(cansel_handler, Text(equals='отмена', ignore_case=True), state="*")
     dp.register_message_handler(load_pets_name, state=FSMAdmin.pets_name)
@@ -198,14 +221,17 @@ def register_handlers_admin(dp : Dispatcher):
     dp.register_message_handler(load_photo, content_types=['photo'], state=FSMAdmin.photo)
     dp.register_message_handler(load_owner_name, state=FSMAdmin.owner_name)
     dp.register_message_handler(load_owner_phone, state=FSMAdmin.owner_phone)
-    dp.register_message_handler(delete_item, commands=['Удалить'])
+    dp.register_message_handler(delete_item, commands='Удалить')
     dp.register_message_handler(load_nursery_info, commands='Заявка_из_питомника', state=None)
     dp.register_message_handler(load_nursery_name, state=Nursery.nursery_name)
     dp.register_message_handler(load_nursery_address, state=Nursery.nursery_address)
     dp.register_message_handler(load_nursery_breed, state=Nursery.nursery_breed)
     dp.register_message_handler(load_nursery_photo, content_types=['photo'], state=Nursery.nursery_photo)
     dp.register_message_handler(load_nursery_animal_name, state=Nursery.nursery_animal_name)
-    dp.register_message_handler(delete_item2, commands=['Удаление_заявки_питомник'])
+    dp.register_message_handler(delete_item2, commands='Удаление_заявки_питомник')
+    dp.register_message_handler(client_applications_read, commands='Поданные_заявки')
+    dp.register_message_handler(delete_client_application, commands='Удалить_поданные_заявки')
+
 
 
 
