@@ -194,11 +194,11 @@ async def client_applications_read(message : types.Message):
     if message.from_user.id == ID:
         await sqlite_db.sql_read_client(message)
 
-@dp.callback_query_handler(lambda y: y.data and y.data.startswith('DELETE FROM applications_from_users'))
-async def delete_client_data(callback: types.CallbackQuery):
-    await sqlite_db.sql_delete_client_data(callback.data.replace('DELETE FROM applications_from_users ', ''))
-    await callback.answer(text=f'Поданная заявка на поиск {callback.data.replace("DELETE FROM applications_from_users ", "")} удалена', show_alert=True)
 
+@dp.callback_query_handler(lambda c: c.data and c.data.startswith('DELETE FROM users_applications'))
+async def delete_nursery_data(call: types.CallbackQuery):
+    await sqlite_db.sql_delete_client_data(call.data.replace('DELETE FROM users_applications ', ''))
+    await call.answer(text=f'Поданная заявка на {call.data.replace("DELETE FROM users_applications ", "")} удалена', show_alert=True)
 
 #@dp.message_handler(commands='Удалить_поданные_заявки')
 async def delete_client_application(message: types.Message):
@@ -207,7 +207,7 @@ async def delete_client_application(message: types.Message):
         for ret in read:
             await bot.send_photo(message.from_user.id, ret[3], f'Кличка животного:{ret[0]}\nПорода:{ret[1]}\nПриметы:{ret[2]}\nИмя заявителя:{ret[4]}\nТелефон заявителя:{ret[5]}')
             await bot.send_message(message.from_user.id, text='^^^', reply_markup=InlineKeyboardMarkup(). \
-                                   add(InlineKeyboardButton(f'Удалить поданную заявку на поиск {ret[0]}', callback_data=f'DELETE FROM applications_from_users {ret[0]}')))
+                                   add(InlineKeyboardButton(f'Удалить поданную заявку на поиск {ret[0]}', callback_data=f'DELETE FROM users_applications {ret[0]}')))
 
 #Регистрируем хэндлеры
 def register_handlers_admin(dp : Dispatcher):
